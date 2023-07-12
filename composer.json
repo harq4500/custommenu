@@ -1,0 +1,15 @@
+{
+    "name": "antonbalyan/custommenu",
+    "autoload": {
+        "psr-4": {
+            "Antonbalyan\\Custommenu\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Anton Balyan",
+            "email":"anton.balyan@gmail.com"
+        }
+    ],
+    "require": {}
+}

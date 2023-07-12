@@ -2,31 +2,36 @@
 /**
  * Handles front end part
  */
-class CM_Nav_menu{
 
+namespace Antonbalyan\Custommenu;
+
+class NavMenu{
 
     /**
      * Custom style to menu 
      */
-    public function add_style()
-    {
-        wp_enqueue_style( 'custom-mega-menu-style',  CM_PLUGIN_URL . 'assets/megamenu.css', array(), '1.0', 'all' );
-        wp_enqueue_script( 'custom-mega-menu-script', CM_PLUGIN_URL . '/assets/megamenu.js', array('jquery'), '1.0', true);
+
+    public function add_style() {
+        wp_enqueue_style( 'custom-mega-menu-style',  CM_PLUGIN_URL . 'assets/css/megamenu.css', array(), '1.0', 'all' );
+        // wp_enqueue_script( 'custom-mega-menu-script', CM_PLUGIN_URL . '/assets/megamenu.js', array('jquery'), '1.0', true);
     }
 
     /**
      * Checks on which menu item is enabled "mega menu" feature
      * Adds CSS  custom "custom-mega-menu" and built in "menu-item-has-children" classes to the menu item
      */
-    public function add_classes($items, $args)
-    {
-       
-        foreach($items as $item){
+    
+    public function add_classes($items) {
+        if( class_exists('ACF') ) {
 
-            $mega_menu_enabled = get_field('mega_menu_enabled', $item);
-            
-            if(count($mega_menu_enabled) > 0 && $mega_menu_enabled[0] == true){
-                array_push($item->classes, 'custom-mega-menu', 'menu-item-has-children');
+            foreach($items as $item){
+
+                $mega_menu_enabled = get_field('mega_menu_enabled', $item);
+                if($mega_menu_enabled){
+                    if(count($mega_menu_enabled) > 0 && $mega_menu_enabled[0] == true){
+                        array_push($item->classes, 'custom-mega-menu', 'menu-item-has-children');
+                    }
+                }
             }
         }
         return $items;
@@ -36,8 +41,7 @@ class CM_Nav_menu{
      * Checks menu items for the custom (custom-mega-menu) class, and appends "Mega Menu" custom html into menu item
      */
 
-    public function filter_menu($output, $item, $depth, $args)
-    {
+    public function filter_menu($output, $item, $depth) {
         
         if ( 0 === $depth && in_array( 'custom-mega-menu', $item->classes, true ) ) {
           
@@ -49,8 +53,8 @@ class CM_Nav_menu{
     /**
      * Build custom html for List Item "Mege Menu" View
      */
-    private function menu_html()
-    {
+
+    private function menu_html() {
         $product_cats =  $this->parse_taxonomies_arr();
       
         $output  = '<ul class="sub-menu">';
@@ -79,8 +83,7 @@ class CM_Nav_menu{
      * Parse product_cat taxonomy in a new array structure
      */
 
-    private function parse_taxonomies_arr()
-    {
+    private function parse_taxonomies_arr() {
         $product_cats =  get_terms(array(
             'taxonomy'   => 'product_cat',
             'hide_empty' => false
@@ -102,8 +105,7 @@ class CM_Nav_menu{
     }
 
     
-    private function parse_children($product_cats,$product_cats_arr)
-    {
+    private function parse_children($product_cats,$product_cats_arr) {
         foreach($product_cats_arr as $product_cats_arr_item){
             foreach($product_cats as $product_cat){
                 if($product_cats_arr_item->term_id == $product_cat->parent){

@@ -58,7 +58,7 @@ if ( ! class_exists( 'CustomMenu' ) ) {
         /**
          * Init plugin functionality.
          */
-        public function init(){
+        public function init() {
             /**
              * Check if ACF and/or Woocommerce plugins are installed and activated
              * Show required notice

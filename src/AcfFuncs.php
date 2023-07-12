@@ -3,8 +3,7 @@ namespace Antonbalyan\Custommenu;
 
 class AcfFuncs{
    
-    public function load_json($paths)
-    {
+    public function load_json($paths) {
         unset($paths[0]);
         
         // append path

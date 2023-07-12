@@ -23,7 +23,8 @@ class Notices{
      * Check if user has the right
      * make a check and show notice if needed
      */
-    public function show() {
+    public function show() 
+    {
         
         if ( current_user_can( 'activate_plugins' ) && current_user_can( 'install_plugins' ) &&  current_user_can( 'update_plugins' ) ) {
            
@@ -36,7 +37,8 @@ class Notices{
     /**
      * Build admin notice about required plugins
      */
-    public function admin_notice() {
+    public function admin_notice() 
+    {
         
         $class = 'notice notice-warning  is-dismissible';
         $plugin_name = 'Custom Menu Plugin';
@@ -49,7 +51,8 @@ class Notices{
      * Check if required plugins are installed
      * Build installation links.
      */
-    private function check_plugins() {
+    private function check_plugins() 
+    {
         $plugins = '';
         if(!is_plugin_active('advanced-custom-fields/acf.php')){
             $plugins .= '<a href="'.admin_url('plugin-install.php').'?tab=plugin-information&amp;plugin=advanced-custom-fields&amp;TB_iframe=true&amp;width=640&amp;height=500" class="thickbox">Advanced Custom Fields (ACF)</a>';

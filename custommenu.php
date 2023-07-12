@@ -35,7 +35,8 @@ if ( ! class_exists( 'CustomMenu' ) ) {
         /**
          * Class initializer.
          */
-        public function plugins_loaded() {
+        public function plugins_loaded() 
+        {
           
             load_plugin_textdomain(
                 'custommenu',
@@ -58,7 +59,8 @@ if ( ! class_exists( 'CustomMenu' ) ) {
         /**
          * Init plugin functionality.
          */
-        public function init() {
+        public function init() 
+        {
             /**
              * Check if ACF and/or Woocommerce plugins are installed and activated
              * Show required notice

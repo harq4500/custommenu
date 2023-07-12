@@ -11,7 +11,8 @@ class NavMenu{
      * Custom style to menu 
      */
 
-    public function add_style() {
+    public function add_style() 
+    {
         wp_enqueue_style( 'custom-mega-menu-style',  CM_PLUGIN_URL . 'assets/css/megamenu.css', array(), '1.0', 'all' );
     }
 
@@ -20,7 +21,8 @@ class NavMenu{
      * Adds CSS  custom "custom-mega-menu" and built in "menu-item-has-children" classes to the menu item
      */
     
-    public function add_classes($items) {
+    public function add_classes($items) 
+    {
         if( class_exists('ACF') ) {
 
             foreach($items as $item){
@@ -40,7 +42,8 @@ class NavMenu{
      * Checks menu items for the custom (custom-mega-menu) class, and appends "Mega Menu" custom html into menu item
      */
 
-    public function filter_menu($output, $item, $depth) {
+    public function filter_menu($output, $item, $depth) 
+    {
         
         if ( 0 === $depth && in_array( 'custom-mega-menu', $item->classes, true ) ) {
           
@@ -53,7 +56,8 @@ class NavMenu{
      * Build custom html for List Item "Mege Menu" View
      */
 
-    private function menu_html() {
+    private function menu_html() 
+    {
         $product_cats =  $this->parse_taxonomies_arr();
       
         $output  = '<ul class="sub-menu">';
@@ -82,7 +86,8 @@ class NavMenu{
      * Parse product_cat taxonomy in a new array structure
      */
 
-    private function parse_taxonomies_arr() {
+    private function parse_taxonomies_arr() 
+    {
         $product_cats =  get_terms(array(
             'taxonomy'   => 'product_cat',
             'hide_empty' => false
@@ -104,7 +109,8 @@ class NavMenu{
     }
 
     
-    private function parse_children($product_cats,$product_cats_arr) {
+    private function parse_children($product_cats,$product_cats_arr) 
+    {
         foreach($product_cats_arr as $product_cats_arr_item){
             foreach($product_cats as $product_cat){
                 if($product_cats_arr_item->term_id == $product_cat->parent){

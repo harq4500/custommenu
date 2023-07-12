@@ -30,3 +30,10 @@
 .custom-mega-menu .cm-block h3{
    border-bottom:2px solid #000;
 }
+
+body header nav:has( li.custom-mega-menu) { 
+    position:static;
+}
+body header nav div:has( li.custom-mega-menu) { 
+    position:static;
+}

@@ -13,7 +13,6 @@ class NavMenu{
 
     public function add_style() {
         wp_enqueue_style( 'custom-mega-menu-style',  CM_PLUGIN_URL . 'assets/css/megamenu.css', array(), '1.0', 'all' );
-        // wp_enqueue_script( 'custom-mega-menu-script', CM_PLUGIN_URL . '/assets/megamenu.js', array('jquery'), '1.0', true);
     }
 
     /**

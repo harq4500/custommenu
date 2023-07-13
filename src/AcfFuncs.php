@@ -8,7 +8,7 @@ class AcfFuncs{
         unset($paths[0]);
         
         // append path
-        $paths[] = CM_PLUGIN_DIR.'/assets/acf-json';
+        $paths[] = CM_PLUGIN_DIR.'/acf-json';
         
         // return
         return $paths;

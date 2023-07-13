@@ -28,10 +28,9 @@ class NavMenu{
             foreach($items as $item){
 
                 $mega_menu_enabled = get_field('mega_menu_enabled', $item);
-                if($mega_menu_enabled){
-                    if(count($mega_menu_enabled) > 0 && $mega_menu_enabled[0] == true){
-                        array_push($item->classes, 'custom-mega-menu', 'menu-item-has-children');
-                    }
+                
+                if(!empty($mega_menu_enabled)){
+                    array_push($item->classes, 'custom-mega-menu', 'menu-item-has-children');
                 }
             }
         }
@@ -46,8 +45,8 @@ class NavMenu{
     {
         
         if ( 0 === $depth && in_array( 'custom-mega-menu', $item->classes, true ) ) {
-          
-            $output .= $this->menu_html();
+            
+            $output .=  $this->menu_html();
         }
         return $output;
     }
@@ -59,69 +58,47 @@ class NavMenu{
     private function menu_html() 
     {
         $product_cats =  $this->parse_taxonomies_arr();
-        $output = null;
-        
-        $output  = '<ul class="sub-menu">';
-        $output  .=   '<div class="cm-container">';
-
-        foreach($product_cats as $product_cat){
-            $output  .= '<div class="cm-block">';
-            $output  .= '<h3><a href="'.$product_cat->url.'">'.$product_cat->name.'</a></h3>';
-            
-            if(count($product_cat->children) > 0){
-                foreach($product_cat->children as $child){
-                    $output  .= '<p><a href="'.$child->url.'">'.$child->name.'</a></p>';
-                }
-            }
-
-            $output  .= '</div>';
-        }
-        
-        $output  .= '</div>';
-        $output  .= '</ul>';
-        
-        return  $output;
+        ob_start();
+        include CM_PLUGIN_DIR.'/templates/mega_menu.php';
+        return ob_get_clean();
     }
 
     /**
      * Parse product_cat taxonomy in a new array structure
      */
-
     private function parse_taxonomies_arr() 
     {
         $product_cats =  get_terms(array(
             'taxonomy'   => 'product_cat',
-            'hide_empty' => false
+            'hide_empty' => false,
+            'hierarchical'=>true,
+            'orderby' => 'parent',
+            'order' =>'ASC'
             ) );
-        
+       
         $product_cats_arr = [];
        
         if(!isset($product_cats->errors)){
             foreach($product_cats as $product_cat){
 
+                $product_cat->url = get_term_link($product_cat);
+
                 if($product_cat->parent == 0){
                     $product_cat->children = array();
-                    $product_cat->url = get_term_link($product_cat);
+                    foreach($product_cats as $product_cat_sub){
+                        if($product_cat->term_id == $product_cat_sub->parent){
+
+                            $product_cat_sub->url = get_term_link($product_cat_sub);
+
+                            array_push($product_cat->children, $product_cat_sub);
+                        }
+                    }
+
                     array_push($product_cats_arr, $product_cat);
                 }
             }
         }
-        $product_cats_arr = $this->parse_children($product_cats,$product_cats_arr);
-        
-        return $product_cats_arr;
-    }
 
-    
-    private function parse_children($product_cats,$product_cats_arr) 
-    {
-        foreach($product_cats_arr as $product_cats_arr_item){
-            foreach($product_cats as $product_cat){
-                if($product_cats_arr_item->term_id == $product_cat->parent){
-                    $product_cat->url = get_term_link($product_cat);
-                    array_push($product_cats_arr_item->children,$product_cat);
-                }
-            }
-        }
         return $product_cats_arr;
     }
 }

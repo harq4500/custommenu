@@ -10,12 +10,14 @@ class Notices{
         [
             'name'=>'Advanced Custom Fields (ACF)',
             'slug'=>'advanced-custom-fields',
-            'file'=>'advanced-custom-fields/acf.php'
+            'file'=>'advanced-custom-fields/acf.php',
+            'pro'=>'advanced-custom-fields-pro/acf.php',
         ],
         [
             'name'=>'WooCommerce',
             'slug'=>'woocommerce',
-            'file'=>'woocommerce/woocommerce.php'
+            'file'=>'woocommerce/woocommerce.php',
+            'pro'=>null
         ]
     ];
 
@@ -57,11 +59,14 @@ class Notices{
 
         foreach($this->required_plugins as $key => $required_plugin){
           
-            if( !is_plugin_active($required_plugin['file'])){
+            if( !is_plugin_active($required_plugin['file']) ){
 
                 if($key > 0 && !empty($plugins)){
-                
                     $plugins .= ' and ';
+                }
+
+                if(!empty($required_plugin['pro']) && is_plugin_active($required_plugin['pro'])){
+                    continue;
                 }
 
                 $plugins .= sprintf(

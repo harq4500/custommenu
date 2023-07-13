@@ -54,21 +54,24 @@ class Notices{
     private function check_plugins() 
     {
         $plugins = '';
-        if(!is_plugin_active('advanced-custom-fields/acf.php')){
-            $plugins .= '<a href="'.admin_url('plugin-install.php').'?tab=plugin-information&amp;plugin=advanced-custom-fields&amp;TB_iframe=true&amp;width=640&amp;height=500" class="thickbox">Advanced Custom Fields (ACF)</a>';
-        }
 
-        if(!is_plugin_active('woocommerce/woocommerce.php')){
-            if(!empty( $plugins)){
-                $plugins .= ' and ';
+        foreach($this->required_plugins as $key => $required_plugin){
+          
+            if( !is_plugin_active($required_plugin['file'])){
+
+                if($key > 0 && !empty($plugins)){
+                
+                    $plugins .= ' and ';
+                }
+
+                $plugins .= sprintf(
+                    '<a href="'.admin_url('plugin-install.php').'?tab=plugin-information&amp;plugin=%1$s&amp;TB_iframe=true&amp;width=640&amp;height=500" class="thickbox">%2$s</a>',
+                    $required_plugin['slug'],
+                    $required_plugin['name']
+                );
             }
-            $plugins .= '<a href="'.admin_url('plugin-install.php').'?tab=plugin-information&amp;plugin=woocommerce&amp;TB_iframe=true&amp;width=640&amp;height=500" class="thickbox">WooCommerce</a>';
         }
-
-        foreach($this->required_plugins as $required_plugin){
-            
-        }
-
+      
         return  $plugins;
         
     }

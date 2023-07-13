@@ -59,14 +59,15 @@ class NavMenu{
     private function menu_html() 
     {
         $product_cats =  $this->parse_taxonomies_arr();
-      
+        $output = null;
+        
         $output  = '<ul class="sub-menu">';
         $output  .=   '<div class="cm-container">';
 
         foreach($product_cats as $product_cat){
             $output  .= '<div class="cm-block">';
             $output  .= '<h3><a href="'.$product_cat->url.'">'.$product_cat->name.'</a></h3>';
-
+            
             if(count($product_cat->children) > 0){
                 foreach($product_cat->children as $child){
                     $output  .= '<p><a href="'.$child->url.'">'.$child->name.'</a></p>';
@@ -94,17 +95,19 @@ class NavMenu{
             ) );
         
         $product_cats_arr = [];
+       
+        if(!isset($product_cats->errors)){
+            foreach($product_cats as $product_cat){
 
-        foreach($product_cats as $product_cat){
-            if($product_cat->parent == 0){
-                $product_cat->children = array();
-                $product_cat->url = get_term_link($product_cat);
-                array_push($product_cats_arr, $product_cat);
+                if($product_cat->parent == 0){
+                    $product_cat->children = array();
+                    $product_cat->url = get_term_link($product_cat);
+                    array_push($product_cats_arr, $product_cat);
+                }
             }
         }
-      
         $product_cats_arr = $this->parse_children($product_cats,$product_cats_arr);
-       
+        
         return $product_cats_arr;
     }
 
